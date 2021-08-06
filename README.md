@@ -1,5 +1,6 @@
 # HTML/CSS custom theme for Tumblr
-<p>Preview: https://lxciicodes.tumblr.com/</p>
+
+Preview: https://lxciicodes.tumblr.com/
 ---
 ## Features:
 - '/','/ask','/archive' directories
