@@ -1,0 +1,611 @@
+<!-----------------------------------------------------------------------
+0021
+Made by Kathleen Requilman
+ 
+Last updated: 07/08/2021
+ 
+FEATURES:
+1) '/','/ask','/archive' directories
+2) Pagination
+3) Additional fade-in/out info on right hand side
+4) Search bar
+5) Dark/light mode toggle
+6) Direct to random post
+7) Direct to code
+------------------------------------------------------------------------>
+
+<html>
+<head>
+    <title>{Title}</title>
+    <link rel="icon" href="https://64.media.tumblr.com/tumblr_lu12w8iEsY1r2nnw5.gif" type="image/gif">
+    <link rel="alternate" type="application/rss+xml" href="{RSS}">
+    {block:Description}
+        <meta name="description" content="{MetaDescription}" />
+    {/block:Description}
+
+<!--JQUERY-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--FONT AWESOME ICONS-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"/>
+<!--CUSTOM FONTS-->
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
+
+<!--DARK MODE SWITCH-->
+<script>
+$(document).ready(function() {
+    $('.daynight').click(function() {
+        $('body').toggleClass('night');
+        $('.daynight span').toggleClass('fa-sun');e
+    });
+});
+</script>
+</head>
+
+<style type="text/css">
+/*--------------------SCROLLBAR--------------------*/
+::-webkit-scrollbar {
+    width: 5px;
+    height: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+/*--------------------BASICS--------------------*/
+body {
+   background-color:#fff;
+   border-top:40px solid #1a1a1a;
+   font-family:'Gibson', sans-serif;
+   font-size: 11px;
+   color:#3d3d3d;
+   background-image:
+   url('https://static.tumblr.com/arzxitf/A5Cqxfu2w/dkugvqc.png');
+   background-position:bottom right;
+   background-repeat:no-repeat;
+   background-attachment:fixed;
+}
+ 
+a { 
+    text-decoration:none;
+    color:#e69893;
+}
+ 
+a:hover { 
+    color:#ff5e5e;
+    transition:.6s;
+}
+ 
+b, strong {
+    color:#878787;
+    text-transform:uppercase;
+}
+ 
+i, em { 
+    color:#878787;
+}
+
+c {
+    color:#3d3d3d;
+}
+
+c:hover {
+    color:#949494;
+    transition:.5s;
+}
+ 
+blockquote {
+    padding:2px 7px;
+    margin:3px 0 3px 8px;
+    border-left:1px solid #8c8c8c;
+}
+ 
+blockquote img {     
+    max-width:100%;
+    height:auto;
+}
+ 
+img {
+     max-width: 100%;
+}
+
+h1 {
+    font-size:30px;
+    font-family: 'Barlow', sans-serif;
+    color:#292929;
+    text-align:center;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    padding:10px;
+}
+
+/*--------------------NOTES--------------------*/
+ol.notes {
+    font-size:10px;
+    color:#828282;
+    text-align:left;
+    list-style-type:none;
+}
+
+ol.notes li.note {
+    padding:2px;
+    margin-bottom:5px;
+    font-size:10px;
+}
+
+/*--------------------LIKE/REBLOG CONTROLS--------------------*/
+svg {
+   width:10px;
+   height:auto;
+   fill:#878787;
+   padding:1px;
+   display:block;
+   overflow:visible;
+}
+.controls a {
+   position:relative;
+   display:inline-block;
+   overflow:hidden;
+   padding:5px;
+   width:15px;
+   height:12px;
+   left:45%;
+}
+.controls .reblog {
+   opacity:.93;
+}
+.controls .reblog svg {
+   width:9px;
+   margin-top:1px;
+}
+.controls .like .liked + svg {
+   opacity:1;
+}
+.controls .like .liked + svg path {
+   fill:#ec5a5a;
+}
+.controls .like .like_button {
+   position:relative;
+}
+.controls .like .like_button iframe {
+   position:absolute;
+   top:0;
+   left:0;
+   bottom:0;
+   right:0;
+   z-index:2;
+   opacity:0;
+}
+
+/*--------------------POSTS--------------------*/
+.posts {
+    width:500px;
+    background-color:transparent;
+    padding:10px;
+    margin-bottom:30px;
+    border:1px solid #d6d6d6;
+}
+
+.postinfo {
+   padding:10px;
+   border-top:1px solid #d6d6d6;
+   text-align:center;
+   margin-top:10px;
+}
+
+/*--------------------PERMALINKS--------------------*/
+.permalinks { 
+    text-transform:uppercase;
+    padding:5px;
+    height:12px;
+}
+ 
+.permalinks a { 
+    text-decoration:none;
+    font-size: 9px;
+    color:#e69893;
+}
+ 
+.permalinks a:hover { 
+    color:#ff5e5e;
+} 
+
+.date {
+    float:left;
+}
+
+.reblogs {
+    float:right;
+}
+
+{block:PermalinkPage} 
+.tags { 
+    text-align:center;
+    text-transform:uppercase;
+}
+ 
+.tags a { 
+    text-decoration:none;
+    font-size: 8px;
+    color:#e69893;
+}
+ 
+.tags a:hover { 
+    color:#ff5e5e;
+}
+{/block:PermalinkPage}
+
+/*--------------------SEARCH--------------------*/
+.sfm input {
+    background-color: #fff; 
+    font-size: 10px; 
+    border: 1px solid #d6d6d6; 
+    text-transform: uppercase; 
+    color: #808080; 
+    letter-spacing: 1px; 
+    padding: 4px 8px;
+    font-family: calibri, helvetica, arial;
+}
+
+#sf { 
+    width:120px; 
+}
+
+#sb { 
+    width:60px; 
+    background-color:#ebebeb;
+    border:1px solid #ebebeb;
+}
+
+#search {
+    position:fixed;
+    top:630px;
+    margin-left:1300px;
+}
+
+/*--------------------CONTAINER--------------------*/
+#container {
+    position:fixed;
+    left:600px;
+    width:550px;
+    height:75%;
+    margin-top:5%;
+    overflow-y:scroll;
+}
+
+/*--------------------SIDEBAR--------------------*/
+#sidebar {
+    position:fixed;
+    left:100px;
+    height:45%;
+    margin-top:10%;
+    width:270px;
+    border-right:1px solid #d6d6d6;
+    background-image:
+    url('https://static.tumblr.com/arzxitf/Rleqxftc0/tumblr_nb5b2jg1oo1tkw9ago1_500.png');
+    background-position:center left;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+#description {
+    font-size:10px;
+    color:#757575;
+    text-align:center;
+    letter-spacing:2px;
+    padding:10px;
+}
+
+#sideimage img {
+    max-width:230px;
+    margin-left:20px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+#links {
+    font-size:10px;
+    font-family: 'DM Sans', sans-serif;
+    padding:10px;
+    text-align:center;
+    text-transform:lowercase;
+}
+
+#links a {
+    display:inline-block;
+    color:#e6989;
+    padding-bottom:10px;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#links a:hover {
+    color:#ff5e5e;
+}
+
+#pagination {
+    font-size:15px;
+    font-family: 'DM Sans', sans-serif;
+    text-align:center;
+    padding:10px;
+}
+
+#pagination a {
+    color:#757575;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#pagination a:hover {
+    color:#303030;
+}
+
+/*--------------------ADDITIONAL BOXES--------------------*/
+#aboutbox {
+    position:fixed;
+    top:180px;
+    margin-left:1300px;
+}
+
+#aboutcontent {
+    font:10px;
+    color:#757575;
+    text-align:justify;
+    margin-top:10px;
+    width:200px;
+    opacity:0.5;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#aboutbox:hover #aboutcontent {
+    opacity:1;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#abouttitle {
+    font-size:10px;
+    text-align:center;
+    line-height:15px;
+    letter-spacing:2px;
+    font-weight:normal;
+    padding-bottom:10px;
+    border-bottom:1px solid #d6d6d6;
+}
+
+#creditbox {
+    position:fixed;
+    top:430px;
+    margin-left:1300px;
+}
+
+#creditcontent {
+    font:10px;
+    color:#757575;
+    text-align:center;
+    margin-top:10px;
+    width:200px;
+    opacity:0.5;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#creditbox:hover #creditcontent {
+    opacity:1;
+    -webkit-transition: all 0.7s ease;
+    -moz-transition: all 0.7s ease;
+    -o-transition: all 0.7s ease;
+}
+
+#credittitle {
+    font-size:10px;
+    text-align:center;
+    line-height:15px;
+    letter-spacing:2px;
+    font-weight:normal;
+    padding-bottom:10px;
+    border-bottom:1px solid #d6d6d6;
+}
+
+/*--------------------DARK MODE--------------------*/
+body.night {
+    background:#1f1f1f;
+    border-top:40px solid #fff;
+    transition:.6s;
+    color:#fff;
+    background-image:
+    url('https://static.tumblr.com/arzxitf/A5Cqxfu2w/dkugvqc.png');
+    background-position:bottom right;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.daynight span {
+    cursor:pointer;
+    padding:10px;
+    width:11px;
+    height:11px;
+    border:1px solid #d6d6d6;
+}
+
+body.night svg {
+    fill:#fff;
+}
+
+body.night h1, body.night c {
+    color:#fff;
+}
+
+/*--------------------SIDEBAR FEATURES--------------------*/
+#daynight {
+    position:fixed;
+    top:330px;
+    margin-left:390px;
+}
+
+#random {
+    cursor:pointer;
+    padding:10px;
+    width:11px;
+    height:11px;
+    border:1px solid #d6d6d6;
+    position:fixed;
+    top:380px;
+    margin-left:390px;
+}
+
+#code {
+    cursor:pointer;
+    padding:9px;
+    width:14px;
+    border:1px solid #d6d6d6;
+    position:fixed;
+    top:430px;
+    margin-left:390px;
+}
+ 
+</style>
+
+<body>
+<!----SIDEBAR---->
+<div id="sidebar">
+<div data-aos="fade-up" data-aos-duration="1000">
+<h1>{Title}</h1>
+</div>
+
+<div data-aos="fade-up" data-aos-duration="1400"> 
+<div id="sideimage"><img src="https://static.tumblr.com/arzxitf/CSuqxe9yl/tumblr_c5288cdce5ef366d616b619d637309f7_08aec9e4_540.gif"></div> 
+</div>
+
+<div data-aos="fade-up" data-aos-duration="1500"> 
+<div id="description">{block:Description}{Description}{/block:Description}</div>
+</div>
+
+<div data-aos="fade-up" data-aos-duration="1800">
+<div id="links">
+    <a href="/">home</a></br>
+    <a href="/ask">message</a></br>
+    <a href="/archive">history</a>
+</div>
+</div>
+
+<div data-aos="fade-up" data-aos-duration="2000">
+<div id="pagination">{block:Pagination}
+{block:PreviousPage}<a href="{PreviousPage}" title="previous">←</a>{/block:PreviousPage}
+{block:NextPage}<a href="{NextPage}" title="next">→</a>{/block:NextPage}
+{/block:Pagination}</div>
+</div>
+</div>
+<!----SIDEBAR FEATURES---->
+<div data-aos="fade-up" data-aos-duration="1500">
+<div class="daynight" id="daynight">
+<span class="fa fa-moon" title="toggle light/dark mode"></span></div>
+<div id="random"><a href="/random" title="go to a random post"><c class="fa fa-random"></c></a></div>
+<div id="code"><a href="/" title="get theme code"><c class="fa fa-code"></c></a></div>
+</div>
+
+<!----ADDITIONAL BOXES---->
+<div id="aboutbox">
+<div data-aos="fade-up" data-aos-duration="1000">
+<div id="abouttitle">DETAILS</div>
+</div>
+<div data-aos="fade-up" data-aos-duration="1200">
+<div id="aboutcontent">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</div>
+</div>
+
+<div id="creditbox">
+<div data-aos="fade-up" data-aos-duration="1000">
+<div id="credittitle">RESOURCES</div>
+</div>
+<div data-aos="fade-up" data-aos-duration="1200">
+<div id="creditcontent">
+<a href="https://octomoosey.tumblr.com/tutorials" target="_blank">octomoosey.tumblr.com</a></br>
+<a href="https://shythemes.tumblr.com/post/147903463743/custom-like-and-reblog-buttons" target="_blank">shythemes.tumblr.com</a></br>
+<a href="https://egg.design/daynight" target="_blank">egg.design</a></br>
+<a href="https://fontawesome.com/v4.7/" target="_blank">fontawesome.com</a></br>
+<a href="https://fonts.google.com/" target="_blank">fonts.google.com</a></br>
+<a href="https://loremipsum.io/" target="_blank">loremipsum.io</a>
+</div>
+</div>
+</div>
+
+<div id="search" data-aos="fade-up" data-aos-duration="1200">
+<form action="/search" method="get" class="sfm">
+<input type="text" name="q" value="{SearchQuery}" id="sf"/>
+<input type="submit" value="Search" id="sb"/>
+</form>
+</div>
+
+<!----CONTAINER---->
+<div id="container">   
+ 
+{block:Posts}
+
+<div class="controls">
+<a href="{ReblogURL}" target="_blank" class="reblog">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 361.095 361.095" style="enable-background:new 0 0 361.095 361.095;" xml:space="preserve"><g><g><path d="M182.595,325.678c-63.183,0-120.133-42.217-138.267-102.567c-2.833-9.067-12.183-14.167-21.25-11.333    c-9.067,2.833-14.167,12.183-11.333,21.25c22.95,75.933,91.517,126.65,170.85,126.65c98.317,0,178.5-80.183,178.5-178.5    s-80.183-178.5-178.5-178.5c-55.817,0-108.233,26.633-141.667,69.7l-7.083-56.1c-1.133-9.35-9.633-15.867-18.983-14.733    C5.511,2.678-1.005,11.178,0.128,20.528l13.317,103.7c1.133,8.5,8.5,14.733,16.717,14.733c0.567,0,1.417,0,1.983,0l102.567-11.617    c9.35-1.133,16.15-9.35,15.017-18.7s-9.35-16.15-18.7-15.017l-68.85,7.65c26.633-39.95,71.683-64.6,120.417-64.6    c79.617,0,144.5,64.883,144.5,144.5S262.211,325.678,182.595,325.678z"/></g></g></svg>
+</a>
+<a href="#" class="like">{LikeButton}
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 442.403 442.403" style="enable-background:new 0 0 442.403 442.403;" xml:space="preserve"><g><g><path d="M213.05,422.652c2.833,1.7,5.95,2.833,9.35,2.833c3.117,0,6.517-0.85,9.35-2.833c7.65-5.1,187.283-123.533,207.683-243.95    c10.483-62.333-8.783-100.867-26.633-122.117c-20.967-24.933-52.133-39.667-83.017-39.667c-10.2,0-20.117,1.7-28.9,5.1    c-43.067,16.15-72.25,44.767-88.117,64.317c-15.583-19.267-42.217-47.033-74.517-58.083c-9.917-3.4-20.683-5.1-32.017-5.1    c-28.9,0-56.383,11.9-75.367,32.867c-16.717,18.417-35.7,53.55-29.75,114.75C13.016,291.185,204.833,417.268,213.05,422.652z     M56.083,78.685c17.283-18.983,38.817-21.817,50.15-21.817c7.367,0,14.45,1.133,20.967,3.4    c39.383,13.317,70.833,63.467,71.4,63.75c3.117,5.1,8.783,8.217,14.733,7.933c5.95,0,11.333-3.4,14.45-8.5    c0.283-0.567,28.617-48.733,85.283-69.983c4.817-1.7,10.767-2.833,16.717-2.833c20.967,0,42.217,10.483,56.95,27.767    c19.267,22.667,25.783,55.533,18.983,94.633c-7.367,43.067-42.5,94.633-101.717,149.317c-33.433,30.883-66.3,54.683-81.6,65.45    c-16.15-11.05-51-36.55-86.417-68.85C74.216,262.285,39.366,209.868,35.116,167.368C31.433,128.552,38.516,97.952,56.083,78.685z"/></g></g></svg>
+</a>
+</div>
+
+<div class="posts" id="{PostID}">
+{block:Text}{block:Title}{Title}{/block:Title}{Body}{/block:Text}
+ 
+{block:Photo}<img src="{PhotoURL-500}" alt="{PhotoAlt}"/>{block:Caption}{Caption}{/block:Caption}{/block:Photo}
+ 
+{block:Panorama}{LinkOpenTag}<img src="{PhotoURL-Panorama}" alt="{PhotoAlt}"/>{LinkCloseTag}{block:Caption}{Caption}{/block:Caption}{/block:Panorama}
+ 
+{block:Photoset}{Photoset-500}{block:Caption}{Caption}{/block:Caption}{/block:Photoset}
+
+{block:Quote}"{Quote}"{block:Source}{Source}{/block:Source}{/block:Quote}
+ 
+{block:Link}<a href="{URL}" class="link" {Target}>{Name}</a>{block:Description}{Description}{/block:Description}{/block:Link}
+ 
+{block:Chat}{block:Title}{Title}</a>{/block:Title}
+{block:Lines}<li>{block:Label}{Label}{/block:Label}{Line}</li>{/block:Lines}{/block:Chat}
+ 
+{block:Video}{Video-500}{block:Caption}{Caption}{/block:Caption}{/block:Video}
+ 
+{block:Audio}{AudioEmbed}{block:Caption}{Caption}{/block:Caption}{/block:Audio}
+
+<div class="postinfo">  
+<div class="permalinks">
+<div class="date"><a href="{Permalink}">{DayOfMonthWithZero} {ShortMonth} {Year} </a></div>
+<a href="{Permalink}">{block:NoteCount}{NoteCountWithLabel}{/block:NoteCount}</a>
+<div class="reblogs">{block:RebloggedFrom}
+<a href="{ReblogParentURL}">via &nbsp&nbsp</a>
+<a href="{ReblogRootURL}">source</a>
+{/block:RebloggedFrom}</div>
+</div>
+ 
+{block:PermalinkPage}<div class="tags">{block:HasTags}{block:Tags}<a href="{TagUrl}"> {Tag}</a>{/block:Tags}{/block:HasTags}</div>{/block:PermalinkPage}
+
+</div>  
+</div>
+{block:PostNotes}<div class="notes">{PostNotes}</div>{/block:PostNotes}
+{/block:Posts}
+ 
+</div>
+ 
+{block:ContentSource}
+<!-- {SourceURL}{block:SourceLogo}<img src="{BlackLogoURL}"
+width="{LogoWidth}" height="{LogoHeight}" alt="{SourceTitle}" />
+{/block:SourceLogo}
+{block:NoSourceLogo}{SourceLink}{/block:NoSourceLogo} -->
+{/block:ContentSource}
+
+<link rel="stylesheet" href="https://static.tumblr.com/uopakca/prpov76n6/aos.css" />
+<script src="https://static.tumblr.com/uopakca/L8aov76mb/aos.js"></script>
+<script>AOS.init();</script>
+</body>
+</html>
