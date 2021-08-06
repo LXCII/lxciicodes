@@ -509,7 +509,7 @@ body.night h1, body.night c {
 <div class="daynight" id="daynight">
 <span class="fa fa-moon" title="toggle light/dark mode"></span></div>
 <div id="random"><a href="/random" title="go to a random post"><c class="fa fa-random"></c></a></div>
-<div id="code"><a href="https://github.com/LXCII/lxciicodes/blob/main/0021" title="get theme code" target="_blank"><c class="fa fa-code"></c></a></div>
+<div id="code"><a href="https://raw.githubusercontent.com/LXCII/lxciicodes/main/0021?token=AVDV5JCWV46HJD6Q4KKD5PLBBXC6A" title="get theme code" target="_blank"><c class="fa fa-code"></c></a></div>
 </div>
 
 <!----ADDITIONAL BOXES---->
