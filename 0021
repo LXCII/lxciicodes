@@ -3,7 +3,6 @@
 Made by Kathleen Requilman
  
 Last updated: 07/08/2021
-Preview: https://lxciicodes.tumblr.com/
  
 FEATURES:
 1) '/','/ask','/archive' directories
@@ -121,6 +120,10 @@ h1 {
     padding:10px;
 }
 
+img {
+   max-width:100%;
+}
+
 /*--------------------NOTES--------------------*/
 ol.notes {
     font-size:10px;
@@ -151,7 +154,7 @@ svg {
    padding:5px;
    width:15px;
    height:12px;
-   left:45%;
+   left:37%;
 }
 .controls .reblog {
    opacity:.93;
@@ -181,7 +184,7 @@ svg {
 
 /*--------------------POSTS--------------------*/
 .posts {
-    width:500px;
+    width:80%;
     background-color:transparent;
     padding:10px;
     margin-bottom:30px;
@@ -193,6 +196,14 @@ svg {
    border-top:1px solid #d6d6d6;
    text-align:center;
    margin-top:10px;
+}
+
+.video {
+   width:350px!important;
+}
+
+.video iframe {
+   width:350px!important;
 }
 
 /*--------------------PERMALINKS--------------------*/
@@ -261,15 +272,15 @@ svg {
 
 #search {
     position:fixed;
-    top:630px;
-    margin-left:1300px;
+    top:63%;
+    margin-left:68%;
 }
 
 /*--------------------CONTAINER--------------------*/
 #container {
     position:fixed;
-    left:600px;
-    width:550px;
+    left:32%;
+    width:30%;
     height:75%;
     margin-top:5%;
     overflow-y:scroll;
@@ -278,10 +289,10 @@ svg {
 /*--------------------SIDEBAR--------------------*/
 #sidebar {
     position:fixed;
-    left:100px;
+    left:5%;
     height:45%;
     margin-top:10%;
-    width:270px;
+    width:14%;
     border-right:1px solid #d6d6d6;
     background-image:
     url('https://static.tumblr.com/arzxitf/Rleqxftc0/tumblr_nb5b2jg1oo1tkw9ago1_500.png');
@@ -299,10 +310,10 @@ svg {
 }
 
 #sideimage img {
-    max-width:230px;
-    margin-left:20px;
-    margin-top:10px;
-    margin-bottom:10px;
+    max-width:85%;
+    margin-left:7%;
+    margin-top:3%;
+    margin-bottom:4%;
 }
 
 #links {
@@ -347,15 +358,15 @@ svg {
 /*--------------------ADDITIONAL BOXES--------------------*/
 #aboutbox {
     position:fixed;
-    top:180px;
-    margin-left:1300px;
+    top:20%;
+    margin-left:68%;
 }
 
 #aboutcontent {
     font:10px;
     color:#757575;
     text-align:justify;
-    margin-top:10px;
+    margin-top:6%;
     width:200px;
     opacity:0.5;
     -webkit-transition: all 0.7s ease;
@@ -382,15 +393,15 @@ svg {
 
 #creditbox {
     position:fixed;
-    top:430px;
-    margin-left:1300px;
+    top:44%;
+    margin-left:68%;
 }
 
 #creditcontent {
     font:10px;
     color:#757575;
     text-align:center;
-    margin-top:10px;
+    margin-top:6%;
     width:200px;
     opacity:0.5;
     -webkit-transition: all 0.7s ease;
@@ -448,7 +459,7 @@ body.night h1, body.night c {
 #daynight {
     position:fixed;
     top:330px;
-    margin-left:390px;
+    margin-left:20.5%;
 }
 
 #random {
@@ -459,7 +470,7 @@ body.night h1, body.night c {
     border:1px solid #d6d6d6;
     position:fixed;
     top:380px;
-    margin-left:390px;
+    margin-left:20.5%;
 }
 
 #code {
@@ -469,7 +480,7 @@ body.night h1, body.night c {
     border:1px solid #d6d6d6;
     position:fixed;
     top:430px;
-    margin-left:390px;
+    margin-left:20.5%;
 }
  
 </style>
@@ -566,7 +577,7 @@ body.night h1, body.night c {
  
 {block:Panorama}{LinkOpenTag}<img src="{PhotoURL-Panorama}" alt="{PhotoAlt}"/>{LinkCloseTag}{block:Caption}{Caption}{/block:Caption}{/block:Panorama}
  
-{block:Photoset}{Photoset-500}{block:Caption}{Caption}{/block:Caption}{/block:Photoset}
+{block:Photoset}{Photoset}{block:Caption}{Caption}{/block:Caption}{/block:Photoset}
 
 {block:Quote}"{Quote}"{block:Source}{Source}{/block:Source}{/block:Quote}
  
@@ -575,7 +586,7 @@ body.night h1, body.night c {
 {block:Chat}{block:Title}{Title}</a>{/block:Title}
 {block:Lines}<li>{block:Label}{Label}{/block:Label}{Line}</li>{/block:Lines}{/block:Chat}
  
-{block:Video}{Video-500}{block:Caption}{Caption}{/block:Caption}{/block:Video}
+{block:Video}<div class="VIDEO">{Video-400}</div>{block:Caption}{Caption}{/block:Caption}{/block:Video}
  
 {block:Audio}{AudioEmbed}{block:Caption}{Caption}{/block:Caption}{/block:Audio}
 
@@ -607,6 +618,8 @@ width="{LogoWidth}" height="{LogoHeight}" alt="{SourceTitle}" />
 
 <link rel="stylesheet" href="https://static.tumblr.com/uopakca/prpov76n6/aos.css" />
 <script src="https://static.tumblr.com/uopakca/L8aov76mb/aos.js"></script>
-<script>AOS.init();</script>
+ <script>
+   AOS.init();
+ </script>
 </body>
 </html>
